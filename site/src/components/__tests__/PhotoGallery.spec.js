@@ -7,13 +7,11 @@ describe('PhotoGallery', () => {
   it('when passed an array of photos it should render properly', () => {
     const wrapper = mount(PhotoGallery, {
       props: {
-        photos: ['https://www.example.com/3_4_Sit-Up.jpg']
+        photos: ['3_4_Sit-Up/0.jpg']
       }
     })
-    // it should render an image with example.jpg as the src
-    expect(wrapper.find('img').attributes('src')).toBe(
-      'https://ik.imagekit.io/yuhonas/https://www.example.com/3_4_Sit-Up.jpg'
-    )
+    // it should render the image from the site's own exercises folder
+    expect(wrapper.find('img').attributes('src')).toBe('/exercises/3_4_Sit-Up/0.jpg')
   })
 
   it('when passed an empty array it should render the local placeholder image', () => {

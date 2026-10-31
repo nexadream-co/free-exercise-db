@@ -2,6 +2,11 @@
 import { ArrowPathIcon } from '@heroicons/vue/24/solid'
 import placeholderUrl from '@/assets/placeholder.svg'
 
+// images are served from this site's own /exercises folder
+// (site/public/exercises is a symlink to the repo's exercises directory)
+// override with VITE_IMAGE_BASE_URL to use a CDN or other host
+const imageBaseUrl = import.meta.env.VITE_IMAGE_BASE_URL || `${import.meta.env.BASE_URL}exercises/`
+
 export default {
   components: {
     ArrowPathIcon
@@ -25,6 +30,9 @@ export default {
     },
     currentPhoto() {
       return this.photos[this.currentIndex]
+    },
+    currentPhotoUrl() {
+      return `${imageBaseUrl}${this.currentPhoto}`
     }
   },
   methods: {
@@ -44,8 +52,7 @@ export default {
       }
     },
     onImageLoad() {
-      // NOTE: we're really only doing this because of the dynamic image resizing
-      // on a cache miss there is a slight delay with imagekit as it resizes the image
+      // remove the blur once the next image has finished loading
       this.loading = false
     }
   }
@@ -54,14 +61,8 @@ export default {
 <template>
   <div v-if="hasPhotos" :class="{ loading: loading }" class="relative">
     <a href="#" @click="nextPhoto">
-      <!-- use imagekit.io for dynamic image resizing,
-      this is using https://raw.githubusercontent.com/yuhonas/free-exercise-db/exercises
-      as the origin server -->
       <img
-        :src="`https://ik.imagekit.io/yuhonas/${currentPhoto}`"
-        :srcset="`https://ik.imagekit.io/yuhonas/${currentPhoto} 850w, https://ik.imagekit.io/yuhonas/tr:w-250,h-180/${currentPhoto} 200w`"
-        sizes="(min-width: 765px) 200px,
-            850px"
+        :src="currentPhotoUrl"
         loading="lazy"
         class="w-full object-cover rounded-t-lg p-2"
         @load="onImageLoad"
