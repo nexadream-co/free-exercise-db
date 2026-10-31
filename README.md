@@ -128,6 +128,23 @@ npm run test:e2e
 npm run lint
 ```
 
+#### Deploy to [Vercel](https://vercel.com/)
+
+The repository includes a [vercel.json](./vercel.json) at the root, so no extra configuration is needed:
+
+1. Import the repository in Vercel (**Add New → Project**)
+2. Leave **Root Directory** as the repository root (`./`) — the build needs `dist/exercises.json` and the `exercises/` folder which live outside `site/`
+3. Click **Deploy**
+
+Vercel will run `npm ci --prefix site` and `npm run build --prefix site` and serve `site/dist`. Exercise images are also served from `/exercises/<id>/<n>.jpg` on your deployment.
+
+Or via the CLI from the repository root:
+
+```sh
+npx vercel        # preview deployment
+npx vercel --prod # production deployment
+```
+
 ### TODO
 
 #### Incomplete fields
